@@ -1,5 +1,7 @@
 package com.dzvonik.pdftools.controller;
 
+import com.dzvonik.pdftools.service.FileStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,9 @@ public class PdfController {
     @Value("${spring.servlet.multipart.location}")
     private Path root;
 
+    @Autowired
+    FileStorageService storageService;
+
     @GetMapping("/")
     public String index() {
         return "this is pdf root endpoint!";
@@ -39,9 +44,12 @@ public class PdfController {
         // final Path root = Paths.get("/tmp/pdf-tools-files");
         // Files.createDirectories(root);
 
-        for (MultipartFile file : files) {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
-        }
+        storageService.save(files);
+
+//        for (MultipartFile file : files) {
+//            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+//        }
+
 
 //        1.List<File> save(List<MultipartFile>);
 //        2.File mergeFiles(List<File>);

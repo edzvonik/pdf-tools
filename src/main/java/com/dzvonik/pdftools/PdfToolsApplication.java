@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PdfToolsApplication implements CommandLineRunner {
 
 	@Resource
-	private	FileStorageService fileStorage;
+	private	FileStorageService storageService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PdfToolsApplication.class, args);
@@ -18,7 +18,7 @@ public class PdfToolsApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String...args) throws Exception {
-		fileStorage.init();
+		storageService.init();
 	}
 
 }

@@ -2,4 +2,3 @@ spring:
   servlet:
     multipart:
       enabled: true
-      location: uploads
