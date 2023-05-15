@@ -3,10 +3,13 @@ package com.dzvonik.pdftools.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,14 +28,21 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public void save(List<MultipartFile> files) {
+    public List<File> save(List<MultipartFile> files) {
+        List<File> savedFiles = new LinkedList<>();
+
         try {
             for (MultipartFile file : files) {
-                 Files.copy(file.getInputStream(), root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
+                Path pathToFile = root.resolve(Objects.requireNonNull(file.getOriginalFilename()));
+                Files.copy(file.getInputStream(), pathToFile);
+                File savedFile = pathToFile.toFile();
+                savedFiles.add(savedFile);
             }
         } catch (IOException ioe) {
             throw new RuntimeException("Error save files!", ioe);
         }
+
+        return savedFiles;
     }
 
 }
