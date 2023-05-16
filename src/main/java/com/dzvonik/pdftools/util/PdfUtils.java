@@ -1,5 +1,6 @@
 package com.dzvonik.pdftools.util;
 
+import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class PdfUtils {
             PDFmerger.addSource(file);
         }
 
-        PDFmerger.mergeDocuments();
+        PDFmerger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
         return new File(PDFmerger.getDestinationFileName());
     }
 
